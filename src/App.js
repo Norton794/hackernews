@@ -21,7 +21,7 @@ const list = [
 
 
 const isSearched = searchTerm => item =>
- item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 //it coulb be this way:
 // item => item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()
@@ -58,10 +58,41 @@ class App extends React.Component {
     const { searchTerm, list } = this.state;
     return (
       <div className="App">
-        <form>
-          <input type="text" onChange={this.onSearchChange} />
-        </form>
-        {list.filter(isSearched(searchTerm)).map(item => {
+        <Search
+          value={searchTerm}
+          onChange={this.onSearchChange}
+        />
+        <Table
+          list={list}
+          pattern={searchTerm}
+          onDismiss={this.onDismiss}
+        />
+      </div>
+    );
+  }
+
+}
+
+export default App;
+
+class Search extends React.Component {
+  render() {
+    const { value, onChange } = this.props;
+    return (
+      <form>
+        <input type="text" onChange={onChange} value={value} />
+      </form>
+    );
+  }
+}
+
+
+class Table extends React.Component {
+  render() {
+    const { list, pattern, onDismiss } = this.props;
+    return (
+      <div>
+        {list.filter(isSearched(pattern)).map(item => {
           return (
             <div key={item.objectID}>
               <span>
@@ -72,7 +103,7 @@ class App extends React.Component {
               <span>{item.points}</span>
               <span>
                 <button
-                  onClick={() => this.onDismiss(item.objectID)}
+                  onClick={() => onDismiss(item.objectID)}
                   type="button"
                 >
                   Dismiss
@@ -81,11 +112,7 @@ class App extends React.Component {
             </div>
           );
         })}
-
       </div>
     );
   }
-
 }
-
-export default App;
