@@ -20,29 +20,46 @@ const list = [
 ];
 
 
+const isSearched = searchTerm => item =>
+ item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+//it coulb be this way:
+// item => item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()
+//inside filter()
+
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-       list,
+      list,
+      searchTerm: '',
     };
 
     this.onDismiss = this.onDismiss.bind(this);
 
+    this.onSearchChange = this.onSearchChange.bind(this);
+
   }
 
-  onDismiss(id){
-    const updatedList = this.state.list.filter((item) => item.objectID !== id );
+  onDismiss(id) {
+    const updatedList = this.state.list.filter((item) => item.objectID !== id);
     console.log(updatedList);
     this.setState({ list: updatedList });
   }
 
 
+  onSearchChange(e) {
+    this.setState({ searchTerm: e.target.value });
+  }
+
   render() {
     return (
       <div className="App">
-        {this.state.list.map((item) => {
+        <form>
+          <input type="text" onChange={this.onSearchChange} />
+        </form>
+        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
           return (
             <div key={item.objectID}>
               <span>
