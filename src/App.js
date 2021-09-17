@@ -26,6 +26,7 @@ const isSearched = searchTerm => item =>
 //it coulb be this way:
 // item => item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()
 //inside filter()
+//but he wanted to show a high order function
 
 class App extends React.Component {
   constructor() {
@@ -54,12 +55,13 @@ class App extends React.Component {
   }
 
   render() {
+    const { searchTerm, list } = this.state;
     return (
       <div className="App">
         <form>
           <input type="text" onChange={this.onSearchChange} />
         </form>
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
+        {list.filter(isSearched(searchTerm)).map(item => {
           return (
             <div key={item.objectID}>
               <span>
