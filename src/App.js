@@ -66,31 +66,25 @@ class App extends React.Component {
 
 
 
-class Button extends React.Component {
-  render() {
-    const { onClick, className = '', children } = this.props;
+const Button = ({ onClick, className = '', children }) => {
     return (
       <button onClick={onClick} className={className} type="button">
         {children}
       </button>
     );
-  }
 }
 
-class Search extends React.Component {
-  render() {
-    const { value, onChange, children } = this.props;
-    return (
-      <form>
-        {children} <input type="text" onChange={onChange} value={value} />
-      </form>
-    );
-  }
+
+
+const Search = ({value, onChange, children}) => {
+  return (
+    <form>
+      {children} <input type="text" onChange={onChange} value={value} />
+    </form>
+  );
 }
 
-class Table extends React.Component {
-  render() {
-    const { list, pattern, onDismiss } = this.props;
+const Table = ({ list, pattern, onDismiss }) => {
     return (
       <div>
         {list.filter(isSearched(pattern)).map((item) => {
@@ -112,7 +106,6 @@ class Table extends React.Component {
         })}
       </div>
     );
-  }
 }
 
 
