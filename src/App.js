@@ -1,4 +1,5 @@
 import React from "react";
+import './App.css';
 
 const list = [
   {
@@ -54,59 +55,54 @@ class App extends React.Component {
   render() {
     const { searchTerm, list } = this.state;
     return (
-      <div className="App">
-        <Search value={searchTerm} onChange={this.onSearchChange}>
-          Search
-        </Search>
+      <div className="page">
+        <div className="interactions">
+          <Search value={searchTerm} onChange={this.onSearchChange}>
+            Search
+          </Search>
+        </div>
         <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
       </div>
     );
   }
 }
 
+const Button = ({ onClick, className = "", children }) => {
+  return (
+    <button onClick={onClick} className={className} type="button">
+      {children}
+    </button>
+  );
+};
 
-
-const Button = ({ onClick, className = '', children }) => {
-    return (
-      <button onClick={onClick} className={className} type="button">
-        {children}
-      </button>
-    );
-}
-
-
-
-const Search = ({value, onChange, children}) => {
+const Search = ({ value, onChange, children }) => {
   return (
     <form>
       {children} <input type="text" onChange={onChange} value={value} />
     </form>
   );
-}
+};
 
 const Table = ({ list, pattern, onDismiss }) => {
-    return (
-      <div>
-        {list.filter(isSearched(pattern)).map((item) => {
-          return (
-            <div key={item.objectID}>
-              <span>
-                <a href={item.url}>{item.title}</a>
-              </span>
-              <span>{item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points}</span>
-              <span>
-                <Button onClick={() => onDismiss(item.objectID)}>
-                  Dismiss
-                </Button>
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    );
-}
-
+  return (
+    <div className="table">
+      {list.filter(isSearched(pattern)).map((item) => {
+        return (
+          <div key={item.objectID} className="table-row">
+            <span style={{ width: '40%' }}>
+              <a href={item.url}>{item.title}</a>
+            </span>
+            <span style={{ width: '30%' }}>{item.author}</span>
+            <span style={{ width: '10%' }}>{item.num_comments}</span>
+            <span style={{ width: '10%' }}>{item.points}</span>
+            <span style={{ width: '10%' }}>
+              <Button onClick={() => onDismiss(item.objectID)} className="button-inline">Dismiss</Button>
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export default App;
