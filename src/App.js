@@ -8,8 +8,8 @@ const PARAM_SEARCH = "query=";
 
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 
-const isSearched = (searchTerm) => (item) =>
-  item.title.toLowerCase().includes(searchTerm.toLowerCase());
+// const isSearched = (searchTerm) => (item) =>
+//   item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 //it coulb be this way:
 // item => item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()
@@ -30,27 +30,41 @@ class App extends React.Component {
     this.onDismiss = this.onDismiss.bind(this);
 
     this.onSearchChange = this.onSearchChange.bind(this);
+
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
+
+    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
   }
 
   setSearchTopStories(result) {
     this.setState({ result });
   }
 
-  componentDidMount() {
-    const { searchTerm } = this.state;
-
+  fetchSearchTopStories(searchTerm) {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
       .then((response) => response.json())
       .then((result) => this.setSearchTopStories(result))
       .catch((error) => error);
   }
 
+  componentDidMount() {
+    const { searchTerm } = this.state;
+
+    this.fetchSearchTopStories(searchTerm);
+  }
+
   onDismiss(id) {
     const isNotId = (item) => item.objectID !== id;
     const updatedHits = this.state.result.hits.filter(isNotId);
     this.setState({
-      result: { ...this.state.result, hits: updatedHits }
+      result: { ...this.state.result, hits: updatedHits },
     });
+  }
+
+  onSearchSubmit(e) {
+    e.preventDefault();
+    const { searchTerm } = this.state;
+    this.fetchSearchTopStories(searchTerm);
   }
 
   onSearchChange(e) {
@@ -63,17 +77,20 @@ class App extends React.Component {
     return (
       <div className="page">
         <div className="interactions">
-          <Search value={searchTerm} onChange={this.onSearchChange}>
+          <Search
+            value={searchTerm}
+            onChange={this.onSearchChange}
+            onSubmit={this.onSearchSubmit}
+          >
             Search
           </Search>
         </div>
-        {result ?
-        <Table
-        list={result.hits}
-        pattern={searchTerm}
-        onDismiss={this.onDismiss}
-      /> : null}
-        
+        {result ? (
+          <Table
+            list={result.hits}
+            onDismiss={this.onDismiss}
+          />
+        ) : null}
       </div>
     );
   }
@@ -87,18 +104,21 @@ const Button = ({ onClick, className = "", children }) => {
   );
 };
 
-const Search = ({ value, onChange, children }) => {
+const Search = ({ value, onChange, onSubmit, children }) => {
   return (
-    <form>
-      {children} <input type="text" onChange={onChange} value={value} />
+    <form onSubmit={onSubmit}>
+      <input type="text" onChange={onChange} value={value} />
+      <button type="submit">{children}</button>
     </form>
   );
 };
 
-const Table = ({ list, pattern, onDismiss }) => {
+
+
+const Table = ({ list, onDismiss }) => {
   return (
     <div className="table">
-      {list.filter(isSearched(pattern)).map((item) => {
+      {list.map((item) => {
         return (
           <div key={item.objectID} className="table-row">
             <span style={{ width: "40%" }}>
