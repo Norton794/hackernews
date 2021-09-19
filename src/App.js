@@ -46,9 +46,11 @@ class App extends React.Component {
   }
 
   onDismiss(id) {
-    const updatedList = this.state.result.filter((item) => item.objectID !== id);
-    console.log(updatedList);
-    this.setState({ result: updatedList });
+    const isNotId = (item) => item.objectID !== id;
+    const updatedHits = this.state.result.hits.filter(isNotId);
+    this.setState({
+      result: { ...this.state.result, hits: updatedHits }
+    });
   }
 
   onSearchChange(e) {
@@ -58,7 +60,9 @@ class App extends React.Component {
   render() {
     const { searchTerm, result } = this.state;
 
-    if (!result) { return null; }
+    if (!result) {
+      return null;
+    }
 
     return (
       <div className="page">
@@ -67,7 +71,11 @@ class App extends React.Component {
             Search
           </Search>
         </div>
-        <Table list={result.hits} pattern={searchTerm} onDismiss={this.onDismiss} />
+        <Table
+          list={result.hits}
+          pattern={searchTerm}
+          onDismiss={this.onDismiss}
+        />
       </div>
     );
   }
