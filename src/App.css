@@ -63,46 +63,45 @@
 }
 
 .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+width: 100%;
+display: grid;
+place-items: center;
 }
 
 .ball-one{
 	position: relative;
 	width: 60px;
 	height: 60px;
-	background-color: #016fb9;
+	background-color: #fff;
 	border-radius: 50%;
 	box-shadow: 2px 2px 3px 2px rgba(0,0,0,0.2);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	animation: ball-one 2s cubic-bezier(.21,.98,.6,.99) infinite alternate;
+	animation: ball-one 1s cubic-bezier(.21,.98,.6,.99) infinite alternate;
 }
 
 .ball-two{
 	position: relative;
 	width: 40px;
 	height: 40px;
-	background-color: #016fb9;
+	background-color: #fff;
 	border-radius: 50%;
 	box-shadow: 2px 2px 3px 2px rgba(0,0,0,0.2);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	animation: ball-two 2s cubic-bezier(.21,.98,.6,.99) infinite alternate;
+	animation: ball-two 1s cubic-bezier(.21,.98,.6,.99) infinite alternate;
 }
 
 .ball-three{
 	position: relative;
 	width: 20px;
 	height: 20px;
-	background-color: #016fb9;
+	background-color: #fff;
 	border-radius: 50%;
 	box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
-	animation: ball-three 2s cubic-bezier(.21,.98,.6,.99) infinite alternate;
+	animation: ball-three 1s cubic-bezier(.21,.98,.6,.99) infinite alternate;
 }
 
 

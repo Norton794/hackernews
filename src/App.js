@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import PropTypes from 'prop-types';
@@ -77,7 +77,12 @@ class App extends React.Component {
       .then(
         (result) => this._isMounted && this.setSearchTopStories(result.data)
       )
-      .catch((error) => this._isMounted && this.setState({ error }));
+      .catch((error) => {
+        
+          this.setState({ isLoading: false });
+          this._isMounted && this.setState({ error });
+        
+      });
   }
 
   componentDidMount() {
@@ -140,22 +145,24 @@ class App extends React.Component {
             Search
           </Search>
         </div>
-        {error ? (
+
+        {list ? (<TableWithError error={error} list={list} onDismiss={this.onDismiss} />) : null}
+
+        {/* {error ? (
           <div className="interactions">
             <p>Something went wrong.</p>
           </div>
         ) : list ? (
           <Table list={list} onDismiss={this.onDismiss} />
-        ) : null}
+        ) : null} */}
 
         <div className="interactions">
-          {isLoading
-            ? <Loading />
-            : <Button
-              onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-              More
-            </Button>
-          }
+          <ButtonWithLoading
+            isLoading={isLoading} onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}
+          >
+            More
+          </ButtonWithLoading>
+
 
         </div>
       </div>
@@ -217,6 +224,30 @@ const Loading = () =>
       </div>
     </div>
   </div>
+
+
+const HasError = () =>
+  <div className="interactions">
+    <p>Something went wrong.</p>
+  </div>
+
+
+//HOC
+
+const withLoading = (Component) => ({ isLoading, ...rest }) =>
+  isLoading
+    ? <Loading />
+    : <Component {...rest} />
+
+
+const withError = (Component) => ({ error, ...rest }) =>
+  error
+    ? <HasError />
+    : <Component {...rest} />
+
+const TableWithError = withError(Table);
+
+const ButtonWithLoading = withLoading(Button);
 
 //propTypes
 
