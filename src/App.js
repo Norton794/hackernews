@@ -160,6 +160,7 @@ const Button = ({ onClick, className = "", children }) => {
   return (
     <button onClick={onClick} className={className} type="button">
       {children}
+      
     </button>
   );
 };
@@ -201,3 +202,9 @@ const Table = ({ list, onDismiss }) => {
 };
 
 export default App;
+
+export {
+  Button,
+  Search,
+  Table,
+};
