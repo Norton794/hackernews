@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App, { Search, Button, Table } from './App';
+import App from '../src/components/App/index';
+import Table from '../src/components/Table/index';
+import {Search} from '../src/components/Search/index';
+import {Button} from '../src/components/Button/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -26,6 +29,7 @@ describe('App', () => {
 
 });
 
+
 describe('Search', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
@@ -42,7 +46,6 @@ describe('Search', () => {
   });
 
 });
-
 
 describe('Button', () => {
   it('renders without crashing', () => {
